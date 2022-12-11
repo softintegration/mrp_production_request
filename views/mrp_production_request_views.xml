@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- Manufacturing Request tree view -->
+        <record id="mrp_production_request_tree_view" model="ir.ui.view">
+            <field name="name">mrp.production.request.tree</field>
+            <field name="model">mrp.production.request</field>
+            <field name="arch" type="xml">
+                <tree string="Manufacturing Requests">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <field name="quantity"/>
+                    <field name="quantity_produced"/>
+                    <field name="origin"/>
+                    <field name="state" decoration-bf="state == 'draft'" decoration-warning="state == 'waiting'"
+                           decoration-success="state == 'validated'" decoration-danger="state == 'cancel'"
+                           widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Manufacturing Request form view -->
+        <record id="mrp_production_request_form_view" model="ir.ui.view">
+            <field name="name">mrp.production.request.form</field>
+            <field name="model">mrp.production.request</field>
+            <field name="arch" type="xml">
+                <form string="Manufacturing Requests">
+                    <header>
+                        <button name="action_make_waiting" string="Ask permission" type="object" class="oe_highlight"
+                                states="draft" groups="mrp_production_request.group_mrp_production_request_user"/>
+                        <button name="action_validate" string="Confirm" type="object" class="oe_highlight"
+                                states="waiting" groups="mrp_production_request.group_mrp_production_request_user"/>
+                        <button name="action_make_production_order" string="Make Manufacturing order" type="object"
+                                class="oe_highlight" states="validated" groups="mrp_production_request.group_mrp_production_request_user"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                states="waiting,validated" groups="mrp_production_request.group_mrp_production_request_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,waiting,validated"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="action_view_mrp_productions" type="object"
+                                    icon="fa-wrench" attrs="{'invisible': [('mrp_production_ids_count', '=', 0)]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="mrp_production_ids_count"/>
+                                    </span>
+                                    <span class="o_stat_text">MO's</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Manufacturing Request Reference" nolabel="1"/>
+                            </h1>
+                        </div>
+                        <field name="company_id" invisible="1"/>
+                        <group>
+                            <group name="group_header_left">
+                                <field name="id" invisible="1"/>
+                                <field name="product_id" context="{'default_detailed_type': 'product'}"
+                                       default_focus="1"/>
+                                <field name="bom_id"/>
+                                <field name="request_user_id"/>
+                                <field name="approving_user_id"
+                                       attrs="{'invisible':[('approving_user_id','=',False)]}"/>
+                            </group>
+                            <group name="group_header_right">
+                                <label for="date_request"/>
+                                <div class="o_row">
+                                    <field name="date_request"
+                                           decoration-warning="state not in ('validated', 'cancel') and date_request &lt; now"
+                                           decoration-danger="state not in ('validated', 'cancel') and date_request &lt; current_date"
+                                           decoration-bf="state not in ('validated', 'cancel') and (date_request &lt; current_date or date_request &lt; now)"/>
+                                </div>
+                                <label for="date_desired"/>
+                                <div class="o_row">
+                                    <field name="date_desired"
+                                           decoration-warning="state not in ('validated', 'cancel') and date_desired &lt; now"
+                                           decoration-danger="(state not in ('validated', 'cancel') and date_desired &lt; current_date) or (date_desired &lt; date_request)"/>
+                                </div>
+                                <field name="product_uom_category_id" invisible="1"/>
+                                <label for="quantity"/>
+                                <div name="quantity">
+                                    <field name="quantity" class="oe_inline"/>
+                                    <field name="product_uom_id" readonly="1" force_save="1" class="oe_inline"/>
+                                </div>
+                                <label for="quantity_produced"/>
+                                <div name="quantity_produced">
+                                    <field name="quantity_produced" class="oe_inline"/>
+                                    <field name="product_uom_id" class="oe_inline" force_save="1" readonly="1"/>
+                                </div>
+                                <field name="origin"/>
+                            </group>
+                        </group>
+                        <group name="note" string="Note">
+                            <field name="note" nolabel="1"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Manufacturing Request filter view -->
+        <record id="mrp_production_request_filter_view" model="ir.ui.view">
+            <field name="name">mrp.production.request.filter.view</field>
+            <field name="model">mrp.production.request</field>
+            <field name="arch" type="xml">
+                <search string="Search Manufacturing Requests">
+                    <field name="name" string="Manufacturing Request"
+                           filter_domain="['|', ('name', 'ilike', self), ('origin', 'ilike', self)]"/>
+                    <field name="product_id"/>
+                    <field name="origin"/>
+                    <filter string="My Requests" name="my_requests" domain="[('request_user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'waiting')]"/>
+                    <filter string="Validated" name="filter_validated" domain="[('state', '=', 'validated')]"/>
+                    <filter string="Cancelled" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Product" name="product" domain="[]" context="{'group_by': 'product_id'}"/>
+                        <filter string="Status" name="status" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Manufacturing Request action -->
+        <record id="mrp_production_request_action" model="ir.actions.act_window">
+            <field name="name">Manufacturing Requests</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="mrp_production_request_filter_view"/>
+            <field name="context">{'search_default_my_requests': 1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No manufacturing request found. Let's create one.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="mrp_production_request_action"
+                  id="menu_mrp_production_request_action"
+                  parent="mrp.menu_mrp_manufacturing"
+                  name="Manufacturing requests"
+                  groups="mrp_production_request.group_mrp_production_request_user"
+                  sequence="1"/>
+
+        <menuitem action="mrp.mrp_production_action"
+                  id="mrp.menu_mrp_production_action"
+                  parent="mrp.menu_mrp_manufacturing"
+                  sequence="2"/>
+
+
+    </data>
+</odoo>

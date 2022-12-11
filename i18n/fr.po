@@ -61,7 +61,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__approving_user_id
 msgid "Approved by"
-msgstr ""
+msgstr "Approuvé par"
 
 #. module: mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view

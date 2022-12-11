@@ -60,6 +60,17 @@
                                 <field name="id" invisible="1"/>
                                 <field name="product_id" context="{'default_detailed_type': 'product'}"
                                        default_focus="1"/>
+                                <field name="product_uom_category_id" invisible="1"/>
+                                <label for="quantity"/>
+                                <div name="quantity">
+                                    <field name="quantity" class="oe_inline"/>
+                                    <field name="product_uom_id" readonly="1" force_save="1" class="oe_inline"/>
+                                </div>
+                                <label for="quantity_produced"/>
+                                <div name="quantity_produced">
+                                    <field name="quantity_produced" class="oe_inline"/>
+                                    <field name="product_uom_id" class="oe_inline" force_save="1" readonly="1"/>
+                                </div>
                                 <field name="bom_id"/>
                                 <field name="request_user_id"/>
                                 <field name="approving_user_id"
@@ -78,17 +89,6 @@
                                     <field name="date_desired"
                                            decoration-warning="state not in ('validated', 'cancel') and date_desired &lt; now"
                                            decoration-danger="(state not in ('validated', 'cancel') and date_desired &lt; current_date) or (date_desired &lt; date_request)"/>
-                                </div>
-                                <field name="product_uom_category_id" invisible="1"/>
-                                <label for="quantity"/>
-                                <div name="quantity">
-                                    <field name="quantity" class="oe_inline"/>
-                                    <field name="product_uom_id" readonly="1" force_save="1" class="oe_inline"/>
-                                </div>
-                                <label for="quantity_produced"/>
-                                <div name="quantity_produced">
-                                    <field name="quantity_produced" class="oe_inline"/>
-                                    <field name="product_uom_id" class="oe_inline" force_save="1" readonly="1"/>
                                 </div>
                                 <field name="origin"/>
                             </group>

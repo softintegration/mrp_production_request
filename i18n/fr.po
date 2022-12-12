@@ -23,10 +23,10 @@ msgid ""
 " * Validated: The MR is confirmed, the production order can be created.\n"
 " * Cancelled: The MR has been cancelled, can't be confirmed anymore."
 msgstr ""
-" * Brouillon: La Demande de production est en mode brouillon.\n"
-" * En attente: La Demande de production est en attente d'approbation.\n"
-" * Validée: La Demande de production est validée,les Ordres de fabrication peuvent étre créee.\n"
-" * Annulée: La Demande de production est annulée."
+" * Brouillon: La Demande de fabrication est en mode brouillon.\n"
+" * En attente: La Demande de fabrication est en attente d'approbation.\n"
+" * Validée: La Demande de fabrication est validée,les Ordres de fabrication peuvent étre créee.\n"
+" * Annulée: La Demande de fabrication est annulée."
 
 #. module: mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
@@ -246,7 +246,7 @@ msgstr "Créer un ordre de fabrication"
 #: model:ir.module.category,name:mrp_production_request.module_category_mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_filter_view
 msgid "Manufacturing Request"
-msgstr "Demande de production"
+msgstr "Demande de fabrication"
 
 #. module: mrp_production_request
 #: model:res.groups,name:mrp_production_request.group_mrp_production_request_manager
@@ -268,12 +268,12 @@ msgstr "Utilisateur"
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_tree_view
 msgid "Manufacturing Requests"
-msgstr "Demandes de production"
+msgstr "Demandes de fabrication"
 
 #. module: mrp_production_request
 #: model:ir.ui.menu,name:mrp_production_request.menu_mrp_production_request_action
 msgid "Manufacturing requests"
-msgstr "Demandes de production"
+msgstr "Demandes de fabrication"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__message_has_error
@@ -293,7 +293,7 @@ msgstr "Fabrications"
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production__mrp_production_request_id
 msgid "Mrp Production Request"
-msgstr "Demande de production"
+msgstr "Demande de fabrication"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__my_activity_date_deadline
@@ -326,7 +326,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model_terms:ir.actions.act_window,help:mrp_production_request.mrp_production_request_action
 msgid "No manufacturing request found. Let's create one."
-msgstr "Aucune demande de production n'est trouvé,Créer une nouvelle demande?"
+msgstr "Aucune demande de fabrication n'est trouvé,Créer une nouvelle demande?"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__note
@@ -414,7 +414,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_filter_view
 msgid "Search Manufacturing Requests"
-msgstr "Rechercher Demandes de production"
+msgstr "Rechercher Demandes de fabrication"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__origin

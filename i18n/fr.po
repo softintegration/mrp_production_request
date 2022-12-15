@@ -494,3 +494,8 @@ msgstr "Quantité demandée doit être positive"
 #, python-format
 msgid "%s : Desired Date (%s) should be greater than Date (%s)"
 msgstr "%s : Date souhaitée (%s) doit être supérieur à Date (%s)"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_filter_inherited
+msgid "Production Request"
+msgstr "Demande de fabrication"

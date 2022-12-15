@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_mrp_production_create" model="ir.ui.view">
+            <field name="name">mrp.production.create.form</field>
+            <field name="model">mrp.production.create</field>
+            <field name="arch" type="xml">
+                <form string="Create Production order">
+                    <group>
+                        <p>
+                            You have to specify the qty to produce of the created Production Order.
+                        </p>
+                    </group>
+                    <group name="quantity">
+                        <label for="quantity"/>
+                        <div name="quantity">
+                            <field name="quantity" required="1" class="oe_inline"/>
+                            <field name="product_uom_id" readonly="1" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <footer>
+                        <button string='Confirm' name="apply" type="object" class="btn-primary" data-hotkey="q"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_view_mrp_production_create" model="ir.actions.act_window">
+            <field name="name">Create Production Order</field>
+            <field name="res_model">mrp.production.create</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_mrp_production_create"/>
+            <field name="target">new</field>
+        </record>
+</odoo>

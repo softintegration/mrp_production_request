@@ -86,6 +86,7 @@ class MrpProductionRequest(models.Model):
              " * Validated: The MR is confirmed, the production order can be created.\n"
              " * Cancelled: The MR has been cancelled, can't be confirmed anymore.")
     mrp_production_ids_count = fields.Integer("Count of linked MOs",compute='_compute_mrp_production_ids_count')
+    can_create_mrp_production = fields.Boolean(compute='_compute_can_create_mrp_production')
     company_id = fields.Many2one(
         'res.company', 'Company', default=lambda self: self.env.company,
         index=True, required=True)
@@ -122,7 +123,20 @@ class MrpProductionRequest(models.Model):
         return self._action_validate()
 
     def action_make_production_order(self):
-        return self._action_make_production_order()
+        new_wizard = self.env['mrp.production.create'].create({
+            'quantity': self.quantity,
+            'product_uom_id':self.product_uom_id.id,
+        })
+        view_id = self.env.ref('mrp_production_request.view_mrp_production_create').id
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Create Production Order'),
+            'view_mode': 'form',
+            'res_model': 'mrp.production.create',
+            'target': 'new',
+            'res_id': new_wizard.id,
+            'views': [[view_id, 'form']],
+        }
 
     def action_cancel(self):
         return self._action_cancel()
@@ -133,8 +147,23 @@ class MrpProductionRequest(models.Model):
     def _action_validate(self):
         self.write({'state':'validated','approving_user_id':self.env.user.id})
 
-    def _action_make_production_order(self):
-        raise ValidationError(_("Feature not implemented yet!"))
+    def _action_make_production_order(self,quantity=False,product_uom_id=False):
+        mrp_production_dict_list = self._prepare_mrp_production(quantity=quantity,product_uom_id=product_uom_id)
+        mrp_productions = self.env['mrp.production'].create(mrp_production_dict_list)
+        return mrp_productions
+    def _prepare_mrp_production(self,quantity=False,product_uom_id=False):
+        mrp_prod_dict_list = []
+        for each in self:
+            mrp_prod_dict_list.append({
+                'mrp_production_request_id':each.id,
+                'origin':each.name,
+                'product_id':each.product_id.id,
+                'product_qty':quantity or each.quantity,
+                'product_uom_id':product_uom_id and product_uom_id.id or each.product_uom_id.id,
+                'date_planned_start':each.date_desired,
+                'bom_id':each.bom_id and each.bom_id.id or False,
+            })
+        return mrp_prod_dict_list
 
     def _action_cancel(self):
         self.write({'state':'cancel'})
@@ -150,6 +179,13 @@ class MrpProductionRequest(models.Model):
     def _compute_mrp_production_ids_count(self):
         for each in self:
             each.mrp_production_ids_count = len(each.mrp_production_ids)
+
+    @api.depends('mrp_production_ids')
+    def _compute_can_create_mrp_production(self):
+        for each in self:
+            each.can_create_mrp_production = len(each.mrp_production_ids.filtered(lambda mp:mp.state != 'cancel')) > 0
+
+
 
     @api.depends('mrp_production_ids')
     def _compute_quantity_produced(self):

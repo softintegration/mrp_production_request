@@ -9,4 +9,5 @@ class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
 
-    mrp_production_request_id = fields.Many2one('mrp.production',ondelete='restrict')
+    mrp_production_request_id = fields.Many2one('mrp.production.request',ondelete='restrict')
+

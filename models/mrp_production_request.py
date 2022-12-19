@@ -44,8 +44,7 @@ class MrpProductionRequest(models.Model):
                                    states={'draft': [('readonly', False)]}, readonly=True)
     date_desired = fields.Datetime('Desired Date', copy=False, index=True, required=True,
                                    states={'draft': [('readonly', False)]}, readonly=True)
-    quantity = fields.Float(string="Requested Quantity", digits='Product Unit of Measure', copy=False,
-                            states={'draft': [('readonly', False)]}, readonly=True, requied=True)
+    quantity = fields.Float(string="Requested Quantity", digits='Product Unit of Measure', copy=False,requied=True)
     request_user_id = fields.Many2one('res.users', string='Requested by', default=_get_default_request_user_id,
                                       states={'draft': [('readonly', False)]}, readonly=True, required=True)
     approving_user_id = fields.Many2one('res.users', string='Approved by', readonly=True)
@@ -87,6 +86,8 @@ class MrpProductionRequest(models.Model):
     company_id = fields.Many2one(
         'res.company', 'Company', default=lambda self: self.env.company,
         index=True, required=True)
+    locked = fields.Boolean(string='Locked',help="If the request is locked we can't edit Requested Quantity",
+                            default=False)
 
     @api.onchange('product_id', 'company_id')
     def _onchange_product_id(self):
@@ -141,7 +142,7 @@ class MrpProductionRequest(models.Model):
         return self._action_cancel()
 
     def _action_make_waiting(self):
-        self.write({'state': 'waiting'})
+        self.write({'state': 'waiting','state':'locked'})
 
     def _action_validate(self):
         self.write({'state': 'validated', 'approving_user_id': self.env.user.id})
@@ -167,6 +168,12 @@ class MrpProductionRequest(models.Model):
 
     def _action_cancel(self):
         self.write({'state': 'cancel'})
+
+    def action_lock(self):
+        self.write({'locked': True})
+
+    def action_unlock(self):
+        self.write({'locked': False})
 
     def _check_state(self, state):
         if state == 'validated':

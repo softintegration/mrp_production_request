@@ -36,7 +36,14 @@
                         <button name="action_make_production_order" string="Make Manufacturing order" type="object"
                                 class="oe_highlight" groups="mrp.group_mrp_user" states="validated"/>
                         <button name="action_cancel" string="Cancel" type="object"
-                                states="waiting,validated" groups="mrp_production_request.group_mrp_production_request_user"/>
+                                states="waiting,validated"
+                                groups="mrp_production_request.group_mrp_production_request_user"/>
+                        <button name="action_lock" string="Lock" type="object"
+                                attrs="{'invisible':[('locked','=',True),('state','not in',('draft','cancel'))]}"
+                                groups="mrp_production_request.group_production_request_lock_unlock"/>
+                        <button name="action_unlock" string="Unlock" type="object"
+                                attrs="{'invisible':[('locked','=',False),('state','not in',('draft','cancel'))]}"
+                                groups="mrp_production_request.group_production_request_lock_unlock"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,waiting,validated"/>
                     </header>
                     <sheet>
@@ -60,12 +67,15 @@
                         <group>
                             <group name="group_header_left">
                                 <field name="id" invisible="1"/>
+                                <field name="locked" invisible="1"/>
                                 <field name="product_id" context="{'default_detailed_type': 'product'}"
                                        default_focus="1"/>
                                 <field name="product_uom_category_id" invisible="1"/>
                                 <label for="quantity"/>
                                 <div name="quantity">
-                                    <field name="quantity" class="oe_inline"/>
+                                    <field name="quantity"
+                                           attrs="{'readonly':['|',('locked','=',True),('state','=','cancel')]}"
+                                           class="oe_inline"/>
                                     <field name="product_uom_id" readonly="1" force_save="1" class="oe_inline"/>
                                 </div>
                                 <label for="quantity_produced"/>
@@ -143,9 +153,9 @@
             <field name="search_view_id" ref="mrp_production_request_filter_view"/>
             <field name="context">{'search_default_my_requests': 1}</field>
             <field name="help" type="html">
-              <p class="o_view_nocontent_smiling_face">
-                No manufacturing request found. Let's create one.
-              </p>
+                <p class="o_view_nocontent_smiling_face">
+                    No manufacturing request found. Let's create one.
+                </p>
             </field>
         </record>
 

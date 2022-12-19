@@ -599,3 +599,28 @@ msgstr ""
 #: model:ir.model,name:mrp_production_request.model_production_requests_create_item
 msgid "production.requests.create.item"
 msgstr ""
+
+#. module: mrp_production_request
+#: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__locked
+msgid "If the request is locked we can't edit Requested Quantity"
+msgstr "Si la demande de fabrication est verrouillée, nous ne pouvons pas modifier la quantité demandée"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+msgid "Lock"
+msgstr "Bloquer"
+
+#. module: mrp_production_request
+#: model:res.groups,name:mrp_production_request.group_production_request_lock_unlock
+msgid "Lock/Unlock Manufacturing Requests"
+msgstr "Verrouiller/Déverrouiller les demandes de fabrication"
+
+#. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__locked
+msgid "Locked"
+msgstr "Verrouillé"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+msgid "Unlock"
+msgstr "Déverrouiller"

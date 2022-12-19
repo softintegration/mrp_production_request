@@ -34,7 +34,7 @@
                         <button name="action_validate" string="Confirm" type="object" class="oe_highlight"
                                 states="waiting" groups="mrp_production_request.group_mrp_production_request_user"/>
                         <button name="action_make_production_order" string="Make Manufacturing order" type="object"
-                                class="oe_highlight" groups="mrp.group_mrp_user"/>
+                                class="oe_highlight" groups="mrp.group_mrp_user" states="validated"/>
                         <button name="action_cancel" string="Cancel" type="object"
                                 states="waiting,validated" groups="mrp_production_request.group_mrp_production_request_user"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,waiting,validated"/>

@@ -432,7 +432,7 @@ msgstr "Article"
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__product_uom_id
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__product_uom_id
 msgid "Product Unit of Measure"
-msgstr "Udm"
+msgstr "UdM"
 
 #. module: mrp_production_request
 #: model:ir.model,name:mrp_production_request.model_mrp_production

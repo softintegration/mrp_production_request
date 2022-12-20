@@ -6,14 +6,14 @@
             <field name="name">mrp.production.request.tree</field>
             <field name="model">mrp.production.request</field>
             <field name="arch" type="xml">
-                <tree string="Manufacturing Requests">
+                <tree string="Manufacturing Requests" js_class="lazy_column_list" multi_edit="1" sample="1">
                     <field name="name"/>
-                    <field name="date_request"/>
+                    <field name="date_request" />
                     <field name="product_id"/>
                     <field name="quantity"/>
                     <field name="quantity_produced"/>
                     <field name="product_uom_id"/>
-                    <field name="date_desired"/>
+                    <field name="date_desired" optional="show"/>
                     <field name="origin"/>
                     <field name="state" decoration-bf="state == 'draft'" decoration-warning="state == 'waiting'"
                            decoration-success="state == 'validated'" decoration-danger="state == 'cancel'"
@@ -39,10 +39,10 @@
                                 states="waiting,validated"
                                 groups="mrp_production_request.group_mrp_production_request_user"/>
                         <button name="action_lock" string="Lock" type="object"
-                                attrs="{'invisible':[('locked','=',True),('state','not in',('draft','cancel'))]}"
+                                attrs="{'invisible':['|',('locked','=',True),('state','in',('draft','cancel'))]}"
                                 groups="mrp_production_request.group_production_request_lock_unlock"/>
                         <button name="action_unlock" string="Unlock" type="object"
-                                attrs="{'invisible':[('locked','=',False),('state','not in',('draft','cancel'))]}"
+                                attrs="{'invisible':['|',('locked','=',False),('state','in',('draft','cancel'))]}"
                                 groups="mrp_production_request.group_production_request_lock_unlock"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,waiting,validated"/>
                     </header>

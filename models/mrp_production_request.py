@@ -142,7 +142,7 @@ class MrpProductionRequest(models.Model):
         return self._action_cancel()
 
     def _action_make_waiting(self):
-        self.write({'state': 'waiting','state':'locked'})
+        self.write({'state': 'waiting','locked':True})
 
     def _action_validate(self):
         self.write({'state': 'validated', 'approving_user_id': self.env.user.id})

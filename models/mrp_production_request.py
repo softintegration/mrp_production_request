@@ -44,7 +44,7 @@ class MrpProductionRequest(models.Model):
                                    states={'draft': [('readonly', False)]}, readonly=True)
     date_desired = fields.Datetime('Desired Date', copy=False, index=True, required=True,
                                    states={'draft': [('readonly', False)]}, readonly=True)
-    quantity = fields.Float(string="Requested Quantity", digits='Product Unit of Measure', copy=False,requied=True)
+    quantity = fields.Float(string="Requested Quantity", digits='Product Unit of Measure', copy=False, requied=True)
     request_user_id = fields.Many2one('res.users', string='Requested by', default=_get_default_request_user_id,
                                       states={'draft': [('readonly', False)]}, readonly=True, required=True)
     approving_user_id = fields.Many2one('res.users', string='Approved by', readonly=True)
@@ -86,7 +86,7 @@ class MrpProductionRequest(models.Model):
     company_id = fields.Many2one(
         'res.company', 'Company', default=lambda self: self.env.company,
         index=True, required=True)
-    locked = fields.Boolean(string='Locked',help="If the request is locked we can't edit Requested Quantity",
+    locked = fields.Boolean(string='Locked', help="If the request is locked we can't edit Requested Quantity",
                             default=False)
 
     @api.onchange('product_id', 'company_id')
@@ -142,7 +142,7 @@ class MrpProductionRequest(models.Model):
         return self._action_cancel()
 
     def _action_make_waiting(self):
-        self.write({'state': 'waiting','locked':True})
+        self.write({'state': 'waiting', 'locked': True})
 
     def _action_validate(self):
         self.write({'state': 'validated', 'approving_user_id': self.env.user.id})
@@ -155,16 +155,21 @@ class MrpProductionRequest(models.Model):
     def _prepare_mrp_production(self, quantity=False, product_uom_id=False):
         mrp_prod_dict_list = []
         for each in self:
-            mrp_prod_dict_list.append({
-                'mrp_production_request_id': each.id,
-                'origin': each.name,
-                'product_id': each.product_id.id,
-                'product_qty': quantity or each.quantity,
-                'product_uom_id': product_uom_id and product_uom_id.id or each.product_uom_id.id,
-                'date_planned_start': each.date_desired,
-                'bom_id': each.bom_id and each.bom_id.id or False,
-            })
+            mrp_prod_dict_list.append(
+                each._prepare_singleton_mrp_production(quantity=quantity, product_uom_id=product_uom_id))
         return mrp_prod_dict_list
+
+    def _prepare_singleton_mrp_production(self, quantity=False, product_uom_id=False):
+        self.ensure_one()
+        return {
+            'mrp_production_request_id': self.id,
+            'origin': self.name,
+            'product_id': self.product_id.id,
+            'product_qty': quantity or self.quantity,
+            'product_uom_id': product_uom_id and product_uom_id.id or self.product_uom_id.id,
+            'date_planned_start': self.date_desired,
+            'bom_id': self.bom_id and self.bom_id.id or False,
+        }
 
     def _action_cancel(self):
         self.write({'state': 'cancel'})

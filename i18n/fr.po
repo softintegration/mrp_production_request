@@ -624,3 +624,9 @@ msgstr "Verrouillé"
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
 msgid "Unlock"
 msgstr "Déverrouiller"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:120
+#, python-format
+msgid "Only draft Production requests can be removed!"
+msgstr "Impossible de supprimer une demande de fabrication dont le statut est différent de brouillon"

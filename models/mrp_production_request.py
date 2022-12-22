@@ -115,6 +115,11 @@ class MrpProductionRequest(models.Model):
             vals["name"] = self._get_default_name()
         return super(MrpProductionRequest, self).create(vals)
 
+    def unlink(self):
+        if any(production_request.state != 'draft' for production_request in self):
+            raise ValidationError(_("Only draft Production requests can be removed!"))
+        return super(MrpProductionRequest,self).unlink()
+
     def action_make_waiting(self):
         return self._action_make_waiting()
 

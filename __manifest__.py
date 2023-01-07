@@ -10,7 +10,7 @@
  'qweb': [],
  'description': False,
  'images': [],
- 'version': '1.0.1.17',
+ 'version': '1.0.1.18',
  'category': 'Manufacturing/Manufacturing',
  'demo': [],
  'depends': ['mrp'],

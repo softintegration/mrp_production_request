@@ -155,6 +155,8 @@ class MrpProductionRequest(models.Model):
     def _action_make_production_order(self, quantity=False, product_uom_id=False):
         mrp_production_dict_list = self._prepare_mrp_production(quantity=quantity, product_uom_id=product_uom_id)
         mrp_productions = self.env['mrp.production'].create(mrp_production_dict_list)
+        for mrp_production in mrp_productions:
+            mrp_production._onchange_move_raw()
         return mrp_productions
 
     def _prepare_mrp_production(self, quantity=False, product_uom_id=False):

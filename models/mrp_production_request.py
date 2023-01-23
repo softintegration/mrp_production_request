@@ -88,6 +88,7 @@ class MrpProductionRequest(models.Model):
         index=True, required=True)
     locked = fields.Boolean(string='Locked', help="If the request is locked we can't edit Requested Quantity",
                             default=False)
+    mrp_production_request_date_desired_remove_check = fields.Boolean(compute='_compute_mrp_production_request_date_desired_remove_check')
 
     @api.onchange('product_id', 'company_id')
     def _onchange_product_id(self):
@@ -207,9 +208,11 @@ class MrpProductionRequest(models.Model):
     def _compute_quantity_produced(self):
         pass
 
-    @api.constrains('date_request', 'date_desired')
+    @api.constrains('date_request', 'date_desired','mrp_production_request_date_desired_remove_check')
     def _check_date_range(self):
         for each in self:
+            if each.mrp_production_request_date_desired_remove_check:
+                continue
             if each.date_request and each.date_desired and each.date_request > each.date_desired:
                 raise ValidationError(_('%s : Desired Date (%s) should be greater than Date (%s)', each.name,
                                         format_datetime(self.env, each.date_desired),
@@ -225,3 +228,13 @@ class MrpProductionRequest(models.Model):
             'domain': [('id', 'in', mrp_production_ids)],
             'view_mode': 'tree,form',
         }
+
+    def _compute_mrp_production_request_date_desired_remove_check(self):
+        """ The setting that tell if we have to always overwrite the module"""
+        self.mrp_production_request_date_desired_remove_check = self._get_mrp_production_request_date_desired_remove_check()
+
+    def _get_mrp_production_request_date_desired_remove_check(self):
+        """ The private method of the previous setting"""
+        IrDefault = self.env['ir.default'].sudo()
+        return IrDefault.get('res.config.settings', 'mrp_production_request_date_desired_remove_check',
+                             company_id=self.company_id.id or self.env.user.company_id.id)

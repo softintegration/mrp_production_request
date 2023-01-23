@@ -630,3 +630,18 @@ msgstr "Déverrouiller"
 #, python-format
 msgid "Only draft Production requests can be removed!"
 msgstr "Impossible de supprimer une demande de fabrication dont le statut est différent de brouillon"
+
+#. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_res_config_settings__mrp_production_request_date_desired_remove_check
+msgid "Remove Desired Date check"
+msgstr "Enlever le contrôle de la date souhaité"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.res_config_settings_view_form
+msgid "Remove the check of the Desired date."
+msgstr "Enlever le contrôle de la date souhaité par rapport à la date de la demande de fabrication"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.res_config_settings_view_form
+msgid "Product request"
+msgstr "Demande de fabrication"

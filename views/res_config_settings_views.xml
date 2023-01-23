@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.project</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="50"/>
+            <field name="inherit_id" ref="mrp.res_config_settings_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@data-key='mrp']" position="inside">
+                    <h2>Product request</h2>
+                    <div class="row mt16 o_settings_container" id="product_request">
+                        <div id="mrp_production_request_date_desired_remove_check" class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="mrp_production_request_date_desired_remove_check"/>
+                            </div>
+                            <div class="o_setting_right_pane" name="mrp_production_request_date_desired_remove_check">
+                                <label for="mrp_production_request_date_desired_remove_check"/>
+                                <div class="text-muted">
+                                    Remove the check of the Desired date.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+</odoo>

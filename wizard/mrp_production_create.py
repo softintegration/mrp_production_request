@@ -15,11 +15,11 @@ class MrpProductionCreate(models.TransientModel):
     def apply(self):
         if float_compare(self.quantity, 0.0, precision_rounding=self.product_uom_id.rounding) <= 0:
             raise ValidationError(_('Quantity to produce must be positive!'))
-        if self.env.context.get('active_id') and self.env.context.get('active_model') == 'mrp.production.request':
-            if len(self.env.context.get('active_ids', list())) > 1:
-                raise UserError(_("You may only return one production request at a time."))
-            production_request = self.env['mrp.production.request'].browse(self.env.context.get('active_id'))
-            production_request._action_make_production_order(quantity=self.quantity)
+        if self.env.context.get('active_ids') and self.env.context.get('active_model') == 'mrp.production.request':
+            #if len(self.env.context.get('active_ids', list())) > 1:
+            #    raise UserError(_("You may only return one production request at a time."))
+            production_requests = self.env['mrp.production.request'].browse(self.env.context.get('active_ids'))
+            production_requests._action_make_production_order(quantity=self.quantity)
         else:
             raise UserError(_("No production request source detected!"))
 

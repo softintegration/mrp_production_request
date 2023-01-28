@@ -281,7 +281,9 @@ msgid "Main Attachment"
 msgstr ""
 
 #. module: mrp_production_request
+#: model:ir.actions.server,name:mrp_production_request.action_make_production_order_multi_production_order_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_tree_view
 msgid "Make Manufacturing order"
 msgstr "Créer un ordre de fabrication"
 
@@ -335,9 +337,9 @@ msgid "Mrp Production"
 msgstr "Fabrications"
 
 #. module: mrp_production_request
-#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production__mrp_production_request_id
-msgid "Mrp Production Request"
-msgstr "Demande de fabrication"
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production__mrp_production_request_ids
+msgid "Mrp Production Requests"
+msgstr "Demandes de fabrication"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__my_activity_date_deadline
@@ -645,3 +647,20 @@ msgstr "Enlever le contrôle de la date souhaité par rapport à la date de la d
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.res_config_settings_view_form
 msgid "Product request"
 msgstr "Demande de fabrication"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_form_view_inherited
+msgid "Production requests"
+msgstr "Demandes de fabrication"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "All the selected Production Requests must be for the same product!"
+msgstr "Toutes les demandes de fabrications sélectionnées doivent avoir le même article!"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "Only validated Production requests can create Production order!"
+msgstr "Impossible de créer un ordre de fabrication à partir d'une demande non validée"

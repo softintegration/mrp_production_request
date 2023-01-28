@@ -67,7 +67,7 @@ class MrpProductionRequest(models.Model):
     origin = fields.Char(
         'Source', copy=False, states={'draft': [('readonly', False)]}, readonly=True,
         help="Reference of the document that generated this production order request.")
-    mrp_production_ids = fields.One2many('mrp.production', 'mrp_production_request_id', readonly=True)
+    mrp_production_ids = fields.Many2many('mrp.production', 'mrp_production_request_mrp_production','mrp_production_request_id','mrp_production_id', readonly=True)
     quantity_produced = fields.Float(string='Produced Quantity', compute='_compute_quantity_produced', store=True)
     note = fields.Html(tring='Note')
     state = fields.Selection([
@@ -129,9 +129,15 @@ class MrpProductionRequest(models.Model):
         return self._action_validate()
 
     def action_make_production_order(self):
+        product_ids = self.mapped("product_id")
+        if len(product_ids) > 1:
+            raise ValidationError(_("All the selected Production Requests must be for the same product!"))
+        for each in self:
+            if each.state != "validated":
+                raise ValidationError(_("Only validated Production requests can create Production order!"))
         new_wizard = self.env['mrp.production.create'].create({
-            'quantity': self.quantity,
-            'product_uom_id': self.product_uom_id.id,
+            'quantity': sum(self.mapped("quantity")),
+            'product_uom_id': self.mapped("product_uom_id")[0].id,
         })
         view_id = self.env.ref('mrp_production_request.view_mrp_production_create').id
         return {
@@ -142,6 +148,7 @@ class MrpProductionRequest(models.Model):
             'target': 'new',
             'res_id': new_wizard.id,
             'views': [[view_id, 'form']],
+            'context':self.env.context
         }
 
     def action_cancel(self):
@@ -162,21 +169,21 @@ class MrpProductionRequest(models.Model):
 
     def _prepare_mrp_production(self, quantity=False, product_uom_id=False):
         mrp_prod_dict_list = []
-        for each in self:
-            mrp_prod_dict_list.append(
-                each._prepare_singleton_mrp_production(quantity=quantity, product_uom_id=product_uom_id))
+        #for each in self:
+        #    mrp_prod_dict_list.append(
+        #        each._prepare_singleton_mrp_production(quantity=quantity, product_uom_id=product_uom_id))
+        self._prepare_mrp_production(quantity=quantity, product_uom_id=product_uom_id)
         return mrp_prod_dict_list
 
-    def _prepare_singleton_mrp_production(self, quantity=False, product_uom_id=False):
-        self.ensure_one()
+    def _prepare_mrp_production(self, quantity=False, product_uom_id=False):
         return {
-            'mrp_production_request_id': self.id,
-            'origin': self.name,
-            'product_id': self.product_id.id,
+            'mrp_production_request_ids': [(6, 0, self.ids)],
+            'origin': self.mapped("name")[0],
+            'product_id': self.mapped("product_id")[0].id,
             'product_qty': quantity or self.quantity,
-            'product_uom_id': product_uom_id and product_uom_id.id or self.product_uom_id.id,
-            'date_planned_start': self.date_desired,
-            'bom_id': self.bom_id and self.bom_id.id or False,
+            'product_uom_id': product_uom_id and product_uom_id.id or self.mapped("product_uom_id")[0].id,
+            'date_planned_start': self.mapped("date_desired")[0],
+            'bom_id': self.mapped("bom_id") and self.mapped("bom_id")[0].id or False,
         }
 
     def _action_cancel(self):

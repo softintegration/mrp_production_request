@@ -7,9 +7,25 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="mrp_production_request_id" attrs="{'invisible':[('mrp_production_request_id','=',False)]}"
-                    readonly="1"/>
+                <xpath expr="//notebook" position="before">
+                    <group name="mrp_production_request_ids" string="Production requests">
+                        <field name="mrp_production_request_ids" attrs="{'invisible':[('mrp_production_request_ids','=',False)]}"
+                               readonly="1" nolabel="1">
+                            <tree js_class="lazy_column_list">
+                                <field name="name" optional="show"/>
+                                <field name="date_request" optional="show"/>
+                                <field name="product_id" optional="show"/>
+                                <field name="quantity" optional="show"/>
+                                <field name="quantity_produced" optional="hide"/>
+                                <field name="product_uom_id" optional="show"/>
+                                <field name="date_desired" optional="hide"/>
+                                <field name="origin" optional="hide"/>
+                                <field name="state" decoration-bf="state == 'draft'" decoration-warning="state == 'waiting'"
+                                       decoration-success="state == 'validated'" decoration-danger="state == 'cancel'"
+                                       widget="badge"/>
+                            </tree>
+                        </field>
+                    </group>
                 </xpath>
             </field>
         </record>
@@ -20,7 +36,7 @@
             <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='origin']" position="before">
-                    <field name="mrp_production_request_id" readonly="1"/>
+                    <field name="mrp_production_request_ids" readonly="1" widget="many2many_tags"/>
                 </xpath>
             </field>
         </record>
@@ -31,10 +47,10 @@
             <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='origin']" position="before">
-                    <field name="mrp_production_request_id"/>
+                    <field name="mrp_production_request_ids"/>
                 </xpath>
                 <xpath expr="//filter[@name='status']" position="after">
-                    <filter string="Production Request" name="mrp_production_request_id" domain="[]" context="{'group_by': 'mrp_production_request_id'}"/>
+                    <filter string="Production Requests" name="mrp_production_request_ids" domain="[]" context="{'group_by': 'mrp_production_request_ids'}"/>
                 </xpath>
             </field>
         </record>

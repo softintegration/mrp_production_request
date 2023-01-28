@@ -7,6 +7,10 @@
             <field name="model">mrp.production.request</field>
             <field name="arch" type="xml">
                 <tree string="Manufacturing Requests" js_class="lazy_column_list" multi_edit="1" sample="1">
+                    <header>
+                        <button name="action_make_production_order" string="Make Manufacturing order" type="object"
+                                groups="mrp.group_mrp_user" />
+                    </header>
                     <field name="name"/>
                     <field name="date_request" />
                     <field name="product_id"/>
@@ -171,6 +175,21 @@
                   parent="mrp.menu_mrp_manufacturing"
                   sequence="2"/>
 
+        <!-- Action server (Multi selection operations)-->
+        <record id="action_make_production_order_multi_production_order_request" model="ir.actions.server">
+            <field name="name">Make Manufacturing order</field>
+            <field name="model_id" ref="mrp_production_request.model_mrp_production_request"/>
+            <field name="binding_model_id" ref="mrp_production_request.model_mrp_production_request"/>
+            <field name="binding_view_types">list</field>
+            <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    res = records.with_context(active_ids=records.ids,active_model='mrp.production.request').action_make_production_order()
+                    if isinstance(res, dict):
+                        action = res
+            </field>
+        </record>
 
     </data>
 </odoo>

@@ -42,14 +42,13 @@ class MrpProductionRequest(models.Model):
                                      domain="[('category_id', '=', product_uom_category_id)]")
     date_request = fields.Datetime('Date', copy=False, default=_get_default_date_request, index=True, required=True,
                                    states={'draft': [('readonly', False)]}, readonly=True)
-    date_desired = fields.Datetime('Desired Date', copy=False, index=True, required=True,
-                                   states={'draft': [('readonly', False)]}, readonly=True)
+    date_desired = fields.Datetime('Desired Date', copy=False, index=True, required=True)
     quantity = fields.Float(string="Requested Quantity", digits='Product Unit of Measure', copy=False, requied=True)
     request_user_id = fields.Many2one('res.users', string='Requested by', default=_get_default_request_user_id,
                                       states={'draft': [('readonly', False)]}, readonly=True, required=True)
     approving_user_id = fields.Many2one('res.users', string='Approved by', readonly=True)
     bom_id = fields.Many2one(
-        'mrp.bom', 'Bill of Material', states={'draft': [('readonly', False)]}, readonly=True,
+        'mrp.bom', 'Bill of Material',
         domain="""[
         '&',
             '|',

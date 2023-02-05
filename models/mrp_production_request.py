@@ -135,6 +135,7 @@ class MrpProductionRequest(models.Model):
             if each.state != "validated":
                 raise ValidationError(_("Only validated Production requests can create Production order!"))
         new_wizard = self.env['mrp.production.create'].create({
+            'request_ids':[(6, 0, self.ids)],
             'quantity': sum(self.mapped("quantity")),
             'product_uom_id': self.mapped("product_uom_id")[0].id,
         })

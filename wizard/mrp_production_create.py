@@ -9,6 +9,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class MrpProductionCreate(models.TransientModel):
     _name = 'mrp.production.create'
 
+    request_ids = fields.Many2many('mrp.production.request','mrp_production_create_production_request','production_create_id','production_request_id')
     quantity = fields.Float(string="Quantity to produce", digits='Product Unit of Measure')
     product_uom_id = fields.Many2one('uom.uom', 'Product Unit of Measure', readonly=True)
 
@@ -16,12 +17,12 @@ class MrpProductionCreate(models.TransientModel):
         if float_compare(self.quantity, 0.0, precision_rounding=self.product_uom_id.rounding) <= 0:
             raise ValidationError(_('Quantity to produce must be positive!'))
         if self.env.context.get('active_ids') and self.env.context.get('active_model') == 'mrp.production.request':
-            #if len(self.env.context.get('active_ids', list())) > 1:
-            #    raise UserError(_("You may only return one production request at a time."))
             production_requests = self.env['mrp.production.request'].browse(self.env.context.get('active_ids'))
-            production_requests._action_make_production_order(quantity=self.quantity)
+        elif self.request_ids:
+            production_requests = self.request_ids
         else:
             raise UserError(_("No production request source detected!"))
+        production_requests._action_make_production_order(quantity=self.quantity)
 
 
 

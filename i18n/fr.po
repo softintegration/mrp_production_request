@@ -384,7 +384,7 @@ msgstr ""
 #: code:addons/mrp_production_request/wizard/mrp_production_create.py:24
 #, python-format
 msgid "No production request source detected!"
-msgstr "Aucune demande de fabrication n'est detectée"
+msgstr "Aucune demande de fabrication n'est détectée"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__note

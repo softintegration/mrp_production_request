@@ -66,8 +66,9 @@ class MrpProductionRequest(models.Model):
     origin = fields.Char(
         'Source', copy=False, states={'draft': [('readonly', False)]}, readonly=True,
         help="Reference of the document that generated this production order request.")
-    mrp_production_ids = fields.Many2many('mrp.production', 'mrp_production_request_mrp_production','mrp_production_request_id','mrp_production_id', readonly=True)
-    quantity_produced = fields.Float(string='Produced Quantity', compute='_compute_quantity_produced', store=True)
+    mrp_production_ids = fields.Many2many('mrp.production', 'mrp_production_request_mrp_production',
+                                          'mrp_production_request_id', 'mrp_production_id', readonly=True)
+    quantity_produced = fields.Float(string='Produced Quantity', compute='_compute_quantity_produced')
     note = fields.Html(tring='Note')
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -87,7 +88,8 @@ class MrpProductionRequest(models.Model):
         index=True, required=True)
     locked = fields.Boolean(string='Locked', help="If the request is locked we can't edit Requested Quantity",
                             default=False)
-    mrp_production_request_date_desired_remove_check = fields.Boolean(compute='_compute_mrp_production_request_date_desired_remove_check')
+    mrp_production_request_date_desired_remove_check = fields.Boolean(
+        compute='_compute_mrp_production_request_date_desired_remove_check')
 
     @api.onchange('product_id', 'company_id')
     def _onchange_product_id(self):
@@ -118,7 +120,7 @@ class MrpProductionRequest(models.Model):
     def unlink(self):
         if any(production_request.state != 'draft' for production_request in self):
             raise ValidationError(_("Only draft Production requests can be removed!"))
-        return super(MrpProductionRequest,self).unlink()
+        return super(MrpProductionRequest, self).unlink()
 
     def action_make_waiting(self):
         return self._action_make_waiting()
@@ -135,7 +137,7 @@ class MrpProductionRequest(models.Model):
             if each.state != "validated":
                 raise ValidationError(_("Only validated Production requests can create Production order!"))
         new_wizard = self.env['mrp.production.create'].create({
-            'request_ids':[(6, 0, self.ids)],
+            'request_ids': [(6, 0, self.ids)],
             'quantity': sum(self.mapped("quantity")),
             'product_uom_id': self.mapped("product_uom_id")[0].id,
         })
@@ -148,7 +150,7 @@ class MrpProductionRequest(models.Model):
             'target': 'new',
             'res_id': new_wizard.id,
             'views': [[view_id, 'form']],
-            'context':self.env.context
+            'context': self.env.context
         }
 
     def action_cancel(self):
@@ -165,8 +167,6 @@ class MrpProductionRequest(models.Model):
         mrp_productions = self.env['mrp.production'].create(mrp_production_dict_list)
         mrp_productions._inherit_manual_creation_behaviour()
         return mrp_productions
-
-
 
     def _prepare_mrp_production(self, quantity=False, product_uom_id=False):
         return {
@@ -206,9 +206,13 @@ class MrpProductionRequest(models.Model):
 
     @api.depends('mrp_production_ids')
     def _compute_quantity_produced(self):
-        pass
+        for each in self:
+            each.quantity_produced = sum(production.product_uom_id._compute_quantity(production.qty_produced, each.product_uom_id)
+                                         for production in each.mrp_production_ids.filtered(lambda pr:pr.product_id.id == each.product_id.id))
 
-    @api.constrains('date_request', 'date_desired','mrp_production_request_date_desired_remove_check')
+
+
+    @api.constrains('date_request', 'date_desired', 'mrp_production_request_date_desired_remove_check')
     def _check_date_range(self):
         for each in self:
             if each.mrp_production_request_date_desired_remove_check:

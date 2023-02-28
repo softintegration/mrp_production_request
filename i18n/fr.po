@@ -26,6 +26,7 @@ msgstr ""
 " * Brouillon: La Demande de fabrication est en mode brouillon.\n"
 " * En attente: La Demande de fabrication est en attente d'approbation.\n"
 " * Validée: La Demande de fabrication est validée,les Ordres de fabrication peuvent étre créee.\n"
+" * Clôturé: La Demande de fabrication est clôturé,elle n'est plus modifiable"
 " * Annulée: La Demande de fabrication est annulée."
 
 #. module: mrp_production_request
@@ -563,6 +564,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_filter_view
 msgid "Validated"
 msgstr "Validée"
+
+#. module: mrp_production_request
+#: model:ir.model.fields.selection,name:mrp_production_request.selection__mrp_production_request__state__done
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_filter_view
+msgid "Done"
+msgstr "Clôturée"
 
 #. module: mrp_production_request
 #: model:ir.model.fields.selection,name:mrp_production_request.selection__mrp_production_request__state__waiting

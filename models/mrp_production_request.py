@@ -74,12 +74,14 @@ class MrpProductionRequest(models.Model):
         ('draft', 'Draft'),
         ('waiting', 'Waiting'),
         ('validated', 'Validated'),
+        ('done', 'Done'),
         ('cancel', 'Cancelled')], string='State',
         compute='_compute_state', copy=False, index=True, readonly=True,
         store=True, tracking=True, default='draft',
         help=" * Draft: The MR is not confirmed yet.\n"
              " * Waiting: The MR is confirmed but waiting for approving.\n"
              " * Validated: The MR is confirmed, the production order can be created.\n"
+             " * Done: The MR is done, can't be update or deleted anymore.\n"
              " * Cancelled: The MR has been cancelled, can't be confirmed anymore.")
     mrp_production_ids_count = fields.Integer("Count of linked MOs", compute='_compute_mrp_production_ids_count')
     can_create_mrp_production = fields.Boolean(compute='_compute_can_create_mrp_production')
@@ -129,6 +131,10 @@ class MrpProductionRequest(models.Model):
         self._check_state('validated')
         return self._action_validate()
 
+    #def action_done(self):
+    #    self._check_state('done')
+    #    return self._action_done()
+
     def action_make_production_order(self):
         product_ids = self.mapped("product_id")
         if len(product_ids) > 1:
@@ -161,6 +167,9 @@ class MrpProductionRequest(models.Model):
 
     def _action_validate(self):
         self.write({'state': 'validated', 'approving_user_id': self.env.user.id})
+
+    #def _action_done(self):
+    #    self.write({'state': 'done'})
 
     def _action_make_production_order(self, quantity=False, product_uom_id=False):
         mrp_production_dict_list = self._prepare_mrp_production(quantity=quantity, product_uom_id=product_uom_id)

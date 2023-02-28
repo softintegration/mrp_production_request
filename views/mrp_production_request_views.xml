@@ -48,7 +48,7 @@
                         <button name="action_unlock" string="Unlock" type="object"
                                 attrs="{'invisible':['|',('locked','=',False),('state','in',('draft','cancel'))]}"
                                 groups="mrp_production_request.group_production_request_lock_unlock"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,waiting,validated"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,waiting,validated,done"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -138,6 +138,7 @@
                     <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
                     <filter string="Waiting" name="filter_waiting" domain="[('state', '=', 'waiting')]"/>
                     <filter string="Validated" name="filter_validated" domain="[('state', '=', 'validated')]"/>
+                    <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
                     <filter string="Cancelled" name="filter_cancel" domain="[('state', '=', 'cancel')]"/>
                     <separator/>
                     <group expand="0" string="Group By...">

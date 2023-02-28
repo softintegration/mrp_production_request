@@ -20,7 +20,8 @@
                     <field name="date_desired" optional="show"/>
                     <field name="origin"/>
                     <field name="state" decoration-bf="state == 'draft'" decoration-warning="state == 'waiting'"
-                           decoration-success="state == 'validated'" decoration-danger="state == 'cancel'"
+                           decoration-info="state == 'validated'"
+                           decoration-success="state == 'done'" decoration-danger="state == 'cancel'"
                            widget="badge"/>
                 </tree>
             </field>
@@ -37,16 +38,18 @@
                                 states="draft" groups="mrp_production_request.group_mrp_production_request_user"/>
                         <button name="action_validate" string="Confirm" type="object" class="oe_highlight"
                                 states="waiting" groups="mrp_production_request.group_mrp_production_request_user"/>
+                        <button name="action_done" string="Make as done" type="object" class="oe_highlight"
+                                states="validated" groups="mrp_production_request.group_mrp_production_request_user"/>
                         <button name="action_make_production_order" string="Make Manufacturing order" type="object"
                                 class="oe_highlight" groups="mrp.group_mrp_user" states="validated"/>
                         <button name="action_cancel" string="Cancel" type="object"
                                 states="waiting,validated"
                                 groups="mrp_production_request.group_mrp_production_request_user"/>
                         <button name="action_lock" string="Lock" type="object"
-                                attrs="{'invisible':['|',('locked','=',True),('state','in',('draft','cancel'))]}"
+                                attrs="{'invisible':['|',('locked','=',True),('state','in',('draft','cancel','done'))]}"
                                 groups="mrp_production_request.group_production_request_lock_unlock"/>
                         <button name="action_unlock" string="Unlock" type="object"
-                                attrs="{'invisible':['|',('locked','=',False),('state','in',('draft','cancel'))]}"
+                                attrs="{'invisible':['|',('locked','=',False),('state','in',('draft','cancel','done'))]}"
                                 groups="mrp_production_request.group_production_request_lock_unlock"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,waiting,validated,done"/>
                     </header>
@@ -93,16 +96,16 @@
                                 <label for="date_request"/>
                                 <div class="o_row">
                                     <field name="date_request"
-                                           decoration-warning="state not in ('validated', 'cancel') and date_request &lt; now"
-                                           decoration-danger="state not in ('validated', 'cancel') and date_request &lt; current_date"
-                                           decoration-bf="state not in ('validated', 'cancel') and (date_request &lt; current_date or date_request &lt; now)"/>
+                                           decoration-warning="state not in ('validated','done', 'cancel') and date_request &lt; now"
+                                           decoration-danger="state not in ('validated','done', 'cancel') and date_request &lt; current_date"
+                                           decoration-bf="state not in ('validated','done', 'cancel') and (date_request &lt; current_date or date_request &lt; now)"/>
                                 </div>
                                 <label for="date_desired"/>
                                 <div class="o_row">
                                     <field name="date_desired"
                                            attrs="{'readonly':['|',('locked','=',True),('state','=','cancel')]}"
-                                           decoration-warning="state not in ('validated', 'cancel') and date_desired &lt; now"
-                                           decoration-danger="(state not in ('validated', 'cancel') and date_desired &lt; current_date) or (date_desired &lt; date_request)"/>
+                                           decoration-warning="state not in ('validated','done', 'cancel') and date_desired &lt; now"
+                                           decoration-danger="(state not in ('validated','done', 'cancel') and date_desired &lt; current_date) or (date_desired &lt; date_request)"/>
                                 </div>
                                 <field name="request_user_id"/>
                                 <field name="approving_user_id"

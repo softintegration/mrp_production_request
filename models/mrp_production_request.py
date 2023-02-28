@@ -69,7 +69,7 @@ class MrpProductionRequest(models.Model):
     mrp_production_ids = fields.Many2many('mrp.production', 'mrp_production_request_mrp_production',
                                           'mrp_production_request_id', 'mrp_production_id', readonly=True)
     quantity_produced = fields.Float(string='Produced Quantity', compute='_compute_quantity_produced')
-    note = fields.Html(tring='Note')
+    note = fields.Html(tring='Note',states={'done': [('readonly', True)],'cancel': [('readonly', True)]})
     state = fields.Selection([
         ('draft', 'Draft'),
         ('waiting', 'Waiting'),
@@ -119,6 +119,11 @@ class MrpProductionRequest(models.Model):
             vals["name"] = self._get_default_name()
         return super(MrpProductionRequest, self).create(vals)
 
+    def write(self, vals):
+        if not self.env.context.get('force_update',False) and any(each.state in ('done','cancel') for each in self):
+            raise ValidationError(_("Can not update Done or Cancelled Request!"))
+        return super(MrpProductionRequest,self).write(vals)
+
     def unlink(self):
         if any(production_request.state != 'draft' for production_request in self):
             raise ValidationError(_("Only draft Production requests can be removed!"))
@@ -131,9 +136,9 @@ class MrpProductionRequest(models.Model):
         self._check_state('validated')
         return self._action_validate()
 
-    #def action_done(self):
-    #    self._check_state('done')
-    #    return self._action_done()
+    def action_done(self):
+        self._check_state('done')
+        return self._action_done()
 
     def action_make_production_order(self):
         product_ids = self.mapped("product_id")
@@ -168,8 +173,8 @@ class MrpProductionRequest(models.Model):
     def _action_validate(self):
         self.write({'state': 'validated', 'approving_user_id': self.env.user.id})
 
-    #def _action_done(self):
-    #    self.write({'state': 'done'})
+    def _action_done(self):
+        self.write({'state': 'done'})
 
     def _action_make_production_order(self, quantity=False, product_uom_id=False):
         mrp_production_dict_list = self._prepare_mrp_production(quantity=quantity, product_uom_id=product_uom_id)
@@ -198,7 +203,7 @@ class MrpProductionRequest(models.Model):
         self.write({'locked': False})
 
     def _check_state(self, state):
-        if state == 'validated':
+        if state in ('validated','done'):
             for each in self:
                 if float_is_zero(each.quantity, precision_rounding=each.product_uom_id.rounding):
                     raise UserError(_('The Requested quantity must be positive!'))

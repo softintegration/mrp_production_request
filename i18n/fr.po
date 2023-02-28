@@ -671,3 +671,14 @@ msgstr "Toutes les demandes de fabrications sélectionnées doivent avoir le mê
 #, python-format
 msgid "Only validated Production requests can create Production order!"
 msgstr "Impossible de créer un ordre de fabrication à partir d'une demande non validée"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+msgid "Make as done"
+msgstr "Clôturer"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:124
+#, python-format
+msgid "Can not update Done or Cancelled Request!"
+msgstr "Impossible de modifier une demande de fabrication clôturée ou annulée"

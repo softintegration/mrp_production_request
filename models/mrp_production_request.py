@@ -68,8 +68,11 @@ class MrpProductionRequest(models.Model):
         help="Reference of the document that generated this production order request.")
     mrp_production_ids = fields.Many2many('mrp.production', 'mrp_production_request_mrp_production',
                                           'mrp_production_request_id', 'mrp_production_id', readonly=True)
-    quantity_produced = fields.Float(string='Produced Quantity', compute='_compute_quantity_produced')
-    note = fields.Html(tring='Note',states={'done': [('readonly', True)],'cancel': [('readonly', True)]})
+    quantity_produced = fields.Float(string='Produced Quantity', compute='_compute_quantity_produced',
+                                     inverse='_set_quantity_produced', store=True)
+    quantity_produced_set_man = fields.Boolean(default=False,
+                                               help='If the Produced Quantity have been set manually,if this is true the field will not be overwritten by _compute_quantity_produced method')
+    note = fields.Html(tring='Note', states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
     state = fields.Selection([
         ('draft', 'Draft'),
         ('waiting', 'Waiting'),
@@ -120,9 +123,9 @@ class MrpProductionRequest(models.Model):
         return super(MrpProductionRequest, self).create(vals)
 
     def write(self, vals):
-        if not self.env.context.get('force_update',False) and any(each.state in ('done','cancel') for each in self):
+        if not self.env.context.get('force_update', False) and any(each.state in ('done', 'cancel') for each in self):
             raise ValidationError(_("Can not update Done or Cancelled Request!"))
-        return super(MrpProductionRequest,self).write(vals)
+        return super(MrpProductionRequest, self).write(vals)
 
     def unlink(self):
         if any(production_request.state != 'draft' for production_request in self):
@@ -203,7 +206,7 @@ class MrpProductionRequest(models.Model):
         self.write({'locked': False})
 
     def _check_state(self, state):
-        if state in ('validated','done'):
+        if state in ('validated', 'done'):
             for each in self:
                 if float_is_zero(each.quantity, precision_rounding=each.product_uom_id.rounding):
                     raise UserError(_('The Requested quantity must be positive!'))
@@ -218,12 +221,20 @@ class MrpProductionRequest(models.Model):
         for each in self:
             each.can_create_mrp_production = len(each.mrp_production_ids.filtered(lambda mp: mp.state != 'cancel')) > 0
 
-    @api.depends('mrp_production_ids')
-    def _compute_quantity_produced(self):
-        for each in self:
-            each.quantity_produced = sum(production.product_uom_id._compute_quantity(production.qty_produced, each.product_uom_id)
-                                         for production in each.mrp_production_ids.filtered(lambda pr:pr.product_id.id == each.product_id.id))
+    def _force_recompute_quantity_produced(self):
+        self.with_context(force_update=True)._compute_quantity_produced()
 
+    @api.depends('mrp_production_ids.state','mrp_production_ids.qty_produced','quantity_produced_set_man')
+    def _compute_quantity_produced(self):
+        # we have to re-calculate only production requests that have not been edited manually
+        for each in self.filtered(lambda pr:not pr.quantity_produced_set_man):
+            each.with_context(compute_update=True).quantity_produced = sum(
+                production.product_uom_id._compute_quantity(production.qty_produced, each.product_uom_id)
+                for production in each.mrp_production_ids.filtered(lambda pr: pr.product_id.id == each.product_id.id))
+
+    def _set_quantity_produced(self):
+        for each in self:
+            each.quantity_produced_set_man = not self.env.context.get('compute_update',False)
 
 
     @api.constrains('date_request', 'date_desired', 'mrp_production_request_date_desired_remove_check')

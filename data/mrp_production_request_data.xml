@@ -12,4 +12,8 @@
         </record>
 
     </data>
+
+    <function model="mrp.production.request" name="_force_recompute_quantity_produced" >
+        <value model="mrp.production.request" eval="obj().search([]).ids"/>
+    </function>
 </odoo>

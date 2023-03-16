@@ -81,16 +81,18 @@
                                 <label for="quantity"/>
                                 <div name="quantity">
                                     <field name="quantity"
-                                           attrs="{'readonly':['|',('locked','=',True),('state','=','cancel')]}"
+                                           attrs="{'readonly':['|',('locked','=',True),('state','in',('cancel','done'))]}"
                                            class="oe_inline"/>
                                     <field name="product_uom_id" readonly="1" force_save="1" class="oe_inline"/>
                                 </div>
                                 <label for="quantity_produced"/>
                                 <div name="quantity_produced">
-                                    <field name="quantity_produced" class="oe_inline"/>
+                                    <field name="quantity_produced"
+                                           attrs="{'readonly':['|',('locked','=',True),('state','in',('cancel','done'))]}"
+                                           class="oe_inline"/>
                                     <field name="product_uom_id" class="oe_inline" force_save="1" readonly="1"/>
                                 </div>
-                                <field name="bom_id" attrs="{'readonly':['|',('locked','=',True),('state','=','cancel')]}"/>
+                                <field name="bom_id" attrs="{'readonly':['|',('locked','=',True),('state','in',('cancel','done'))]}"/>
                             </group>
                             <group name="group_header_right">
                                 <label for="date_request"/>
@@ -103,7 +105,7 @@
                                 <label for="date_desired"/>
                                 <div class="o_row">
                                     <field name="date_desired"
-                                           attrs="{'readonly':['|',('locked','=',True),('state','=','cancel')]}"
+                                           attrs="{'readonly':['|',('locked','=',True),('state','in',('cancel','done'))]}"
                                            decoration-warning="state not in ('validated','done', 'cancel') and date_desired &lt; now"
                                            decoration-danger="(state not in ('validated','done', 'cancel') and date_desired &lt; current_date) or (date_desired &lt; date_request)"/>
                                 </div>

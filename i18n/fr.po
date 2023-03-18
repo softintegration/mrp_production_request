@@ -682,3 +682,26 @@ msgstr "Clôturer"
 #, python-format
 msgid "Can not update Done or Cancelled Request!"
 msgstr "Impossible de modifier une demande de fabrication clôturée ou annulée"
+
+
+#. module: mrp_production_request
+#: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__quantity_produced_set_man
+msgid ""
+"If the Produced Quantity have been set manually,if this is true the field "
+"will not be overwritten by _compute_quantity_produced method"
+msgstr ""
+"Ce champ indique si la quantité produite a été spécifiée manuellement,"
+"elle ne sera pas écrasé par la méthode _compute_quantity_produced"
+
+
+#. module: mrp_production_request
+#: model:res.groups,name:mrp_production_request.group_production_request_manual_update_quantity_produced
+msgid "Manual update of Manufacturing request produced quantity"
+msgstr "Modifier manuellement la Quantité fabriquée de la demande de fabrication"
+
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "You are not authorised to do this action!"
+msgstr "Vous n'êtes pas autorisé à modifier manuellement la quantité fabriquée!"

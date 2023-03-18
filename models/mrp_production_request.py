@@ -234,8 +234,17 @@ class MrpProductionRequest(models.Model):
 
     def _set_quantity_produced(self):
         for each in self:
-            each.quantity_produced_set_man = not self.env.context.get('compute_update',False)
+            each._check_manual_access_rights()
+            each.quantity_produced_set_man = self._manual_update_quantity_produced()
 
+    def _manual_update_quantity_produced(self):
+        return not self.env.context.get('compute_update',False)
+
+    def _check_manual_access_rights(self):
+        if not self._manual_update_quantity_produced():
+            return
+        if not self.user_has_groups('mrp_production_request.group_production_request_manual_update_quantity_produced'):
+            raise UserError(_("You are not authorised to do this action!"))
 
     @api.constrains('date_request', 'date_desired', 'mrp_production_request_date_desired_remove_check')
     def _check_date_range(self):

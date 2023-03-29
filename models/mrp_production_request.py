@@ -78,8 +78,7 @@ class MrpProductionRequest(models.Model):
         ('waiting', 'Waiting'),
         ('validated', 'Validated'),
         ('done', 'Done'),
-        ('cancel', 'Cancelled')], string='State',
-        compute='_compute_state', copy=False, index=True, readonly=True,
+        ('cancel', 'Cancelled')], string='State', copy=False, index=True, readonly=True,
         store=True, tracking=True, default='draft',
         help=" * Draft: The MR is not confirmed yet.\n"
              " * Waiting: The MR is confirmed but waiting for approving.\n"

@@ -19,6 +19,7 @@
                     <field name="product_uom_id"/>
                     <field name="date_desired" optional="show"/>
                     <field name="origin"/>
+                    <field name="activity_ids" widget="list_activity" optional="show"/>
                     <field name="state" decoration-bf="state == 'draft'" decoration-warning="state == 'waiting'"
                            decoration-info="state == 'validated'"
                            decoration-success="state == 'done'" decoration-danger="state == 'cancel'"

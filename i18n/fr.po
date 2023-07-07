@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:55+0000\n"
-"PO-Revision-Date: 2022-12-15 13:55+0000\n"
+"POT-Creation-Date: 2023-07-07 20:06+0000\n"
+"PO-Revision-Date: 2023-07-07 20:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,16 +21,13 @@ msgid ""
 " * Draft: The MR is not confirmed yet.\n"
 " * Waiting: The MR is confirmed but waiting for approving.\n"
 " * Validated: The MR is confirmed, the production order can be created.\n"
+" * Planned: The MR is planned.\n"
+" * Done: The MR is done, can't be update or deleted anymore.\n"
 " * Cancelled: The MR has been cancelled, can't be confirmed anymore."
 msgstr ""
-" * Brouillon: La Demande de fabrication est en mode brouillon.\n"
-" * En attente: La Demande de fabrication est en attente d'approbation.\n"
-" * Validée: La Demande de fabrication est validée,les Ordres de fabrication peuvent étre créee.\n"
-" * Clôturé: La Demande de fabrication est clôturé,elle n'est plus modifiable"
-" * Annulée: La Demande de fabrication est annulée."
 
 #. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:162
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #, python-format
 msgid "%s : Desired Date (%s) should be greater than Date (%s)"
 msgstr "%s : Date souhaitée (%s) doit être supérieur à Date (%s)"
@@ -66,6 +63,14 @@ msgid "Activity Type Icon"
 msgstr ""
 
 #. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "All the selected Production Requests must be for the same product!"
+msgstr ""
+"Toutes les demandes de fabrications sélectionnées doivent avoir le même "
+"article!"
+
+#. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__approving_user_id
 msgid "Approved by"
 msgstr "Approuvé par"
@@ -96,6 +101,21 @@ msgid "Can Create Mrp Production"
 msgstr ""
 
 #. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid ""
+"Can not cancel Manufacturing request related to one or more manufacturing "
+"orders!"
+msgstr ""
+"Impossible d'annuler une demande de fabrication liée à une ou plusieurs ordres de fabrications!"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "Can not update Done or Cancelled Request!"
+msgstr "Impossible de modifier une demande de fabrication clôturée ou annulée"
+
+#. module: mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_create
 msgid "Cancel"
@@ -123,6 +143,11 @@ msgid "Company"
 msgstr "Société"
 
 #. module: mrp_production_request
+#: model:ir.model,name:mrp_production_request.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de config"
+
+#. module: mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_create
 msgid "Confirm"
@@ -141,7 +166,7 @@ msgid "Count of linked MOs"
 msgstr ""
 
 #. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:133
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #: model:ir.actions.act_window,name:mrp_production_request.action_view_mrp_production_create
 #, python-format
 msgid "Create Production Order"
@@ -169,7 +194,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__date_request
 msgid "Date"
-msgstr "Date"
+msgstr ""
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__date_desired
@@ -183,6 +208,12 @@ msgstr "Date souhaitée"
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__display_name
 msgid "Display Name"
 msgstr "Nom à afficher"
+
+#. module: mrp_production_request
+#: model:ir.model.fields.selection,name:mrp_production_request.selection__mrp_production_request__state__done
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_filter_view
+msgid "Done"
+msgstr "Clôturée"
 
 #. module: mrp_production_request
 #: model:ir.model.fields.selection,name:mrp_production_request.selection__mrp_production_request__state__draft
@@ -245,6 +276,22 @@ msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: mrp_production_request
+#: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__quantity_produced_set_man
+msgid ""
+"If the Produced Quantity have been set manually,if this is true the field "
+"will not be overwritten by _compute_quantity_produced method"
+msgstr ""
+"Ce champ indique si la quantité produite a été spécifiée manuellement,elle "
+"ne sera pas écrasé par la méthode _compute_quantity_produced"
+
+#. module: mrp_production_request
+#: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__locked
+msgid "If the request is locked we can't edit Requested Quantity"
+msgstr ""
+"Si la demande de fabrication est verrouillée, nous ne pouvons pas modifier "
+"la quantité demandée"
+
+#. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__message_is_follower
 msgid "Is Follower"
 msgstr ""
@@ -271,7 +318,22 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:157
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+msgid "Lock"
+msgstr "Bloquer"
+
+#. module: mrp_production_request
+#: model:res.groups,name:mrp_production_request.group_production_request_lock_unlock
+msgid "Lock/Unlock Manufacturing Requests"
+msgstr "Verrouiller/Déverrouiller les demandes de fabrication"
+
+#. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__locked
+msgid "Locked"
+msgstr "Verrouillé"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #, python-format
 msgid "MO's"
 msgstr "Fabrications"
@@ -287,6 +349,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_tree_view
 msgid "Make Manufacturing order"
 msgstr "Créer un ordre de fabrication"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+msgid "Make as done"
+msgstr "Clôturer"
+
+#. module: mrp_production_request
+#: model:res.groups,name:mrp_production_request.group_production_request_manual_update_quantity_produced
+msgid "Manual update of Manufacturing request produced quantity"
+msgstr ""
+"Modifier manuellement la Quantité fabriquée de la demande de fabrication"
 
 #. module: mrp_production_request
 #: model:ir.model,name:mrp_production_request.model_mrp_production_request
@@ -339,8 +412,13 @@ msgstr "Fabrications"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production__mrp_production_request_ids
-msgid "Mrp Production Requests"
-msgstr "Demandes de fabrication"
+msgid "Mrp Production Request"
+msgstr ""
+
+#. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__mrp_production_request_date_desired_remove_check
+msgid "Mrp Production Request Date Desired Remove Check"
+msgstr ""
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__my_activity_date_deadline
@@ -353,12 +431,17 @@ msgid "My Requests"
 msgstr "Mes Demandes"
 
 #. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:24
-#: code:addons/mrp_production_request/models/mrp_production_request.py:110
-#: code:addons/mrp_production_request/models/mrp_production_request.py:110
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #, python-format
 msgid "New"
-msgstr "Nouvelle"
+msgstr ""
+
+#. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__activity_date_deadline
@@ -382,10 +465,10 @@ msgstr ""
 "Aucune demande de fabrication n'est trouvé,Créer une nouvelle demande?"
 
 #. module: mrp_production_request
-#: code:addons/mrp_production_request/wizard/mrp_production_create.py:24
+#: code:addons/mrp_production_request/wizard/mrp_production_create.py:0
 #, python-format
 msgid "No production request source detected!"
-msgstr "Aucune demande de fabrication n'est détectée"
+msgstr "Aucune demande de fabrication n'est detectée"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__note
@@ -419,6 +502,22 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "Only draft Production requests can be removed!"
+msgstr ""
+"Impossible de supprimer une demande de fabrication dont le statut est "
+"différent de brouillon"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "Only validated Production requests can create Production order!"
+msgstr ""
+"Impossible de créer un ordre de fabrication à partir d'une demande non "
+"validée"
+
+#. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__quantity_produced
 msgid "Produced Quantity"
 msgstr "Quantité fabriquée"
@@ -438,14 +537,19 @@ msgid "Product Unit of Measure"
 msgstr "UdM"
 
 #. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.res_config_settings_view_form
+msgid "Product request"
+msgstr "Demande de fabrication"
+
+#. module: mrp_production_request
 #: model:ir.model,name:mrp_production_request.model_mrp_production
 msgid "Production Order"
 msgstr "Ordre de fabrication"
 
 #. module: mrp_production_request
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_filter_inherited
-msgid "Production Request"
-msgstr "Demande de fabrication"
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__quantity_produced_set_man
+msgid "Quantity Produced Set Man"
+msgstr ""
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__quantity_to_do
@@ -463,7 +567,7 @@ msgid "Quantity to produce"
 msgstr "Quantité à Produire"
 
 #. module: mrp_production_request
-#: code:addons/mrp_production_request/wizard/mrp_production_create.py:17
+#: code:addons/mrp_production_request/wizard/mrp_production_create.py:0
 #, python-format
 msgid "Quantity to produce must be positive!"
 msgstr "Quantité à Produire doit être positive!"
@@ -480,6 +584,19 @@ msgid ""
 msgstr "Référence du document qui a généré cette demande de fabrication."
 
 #. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_res_config_settings__mrp_production_request_date_desired_remove_check
+msgid "Remove Desired Date check"
+msgstr "Enlever le contrôle de la date souhaité"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.res_config_settings_view_form
+msgid "Remove the check of the Desired date."
+msgstr ""
+"Enlever le contrôle de la date souhaité par rapport à la date de la demande "
+"de fabrication"
+
+#. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__request_ids
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__request_id
 msgid "Request"
 msgstr "Demande de fabrication"
@@ -539,7 +656,7 @@ msgid ""
 msgstr ""
 
 #. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:146
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #, python-format
 msgid "The Requested quantity must be positive!"
 msgstr "Quantité demandée doit être positive"
@@ -548,6 +665,11 @@ msgstr "Quantité demandée doit être positive"
 #: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr ""
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+msgid "Unlock"
+msgstr "Déverrouiller"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__message_unread
@@ -566,12 +688,6 @@ msgid "Validated"
 msgstr "Validée"
 
 #. module: mrp_production_request
-#: model:ir.model.fields.selection,name:mrp_production_request.selection__mrp_production_request__state__done
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_filter_view
-msgid "Done"
-msgstr "Clôturée"
-
-#. module: mrp_production_request
 #: model:ir.model.fields.selection,name:mrp_production_request.selection__mrp_production_request__state__waiting
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_filter_view
 msgid "Waiting"
@@ -588,16 +704,18 @@ msgid "Website communication history"
 msgstr ""
 
 #. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid "You are not authorised to do this action!"
+msgstr ""
+"Vous n'êtes pas autorisé à modifier manuellement la quantité fabriquée!"
+
+#. module: mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_create
 msgid ""
 "You have to specify the qty to produce of the created Production Order."
-msgstr "Veuillez spécifier la quantité à produire de l'ordre de fabrication à créer"
-
-#. module: mrp_production_request
-#: code:addons/mrp_production_request/wizard/mrp_production_create.py:20
-#, python-format
-msgid "You may only return one production request at a time."
-msgstr "Vous ne pouvez renvoyer qu'une seule demande de fabrication à la fois."
+msgstr ""
+"Veuillez spécifier la quantité à produire de l'ordre de fabrication à créer"
 
 #. module: mrp_production_request
 #: model:ir.model,name:mrp_production_request.model_mrp_production_create
@@ -608,100 +726,3 @@ msgstr ""
 #: model:ir.model,name:mrp_production_request.model_production_requests_create_item
 msgid "production.requests.create.item"
 msgstr ""
-
-#. module: mrp_production_request
-#: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__locked
-msgid "If the request is locked we can't edit Requested Quantity"
-msgstr "Si la demande de fabrication est verrouillée, nous ne pouvons pas modifier la quantité demandée"
-
-#. module: mrp_production_request
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
-msgid "Lock"
-msgstr "Bloquer"
-
-#. module: mrp_production_request
-#: model:res.groups,name:mrp_production_request.group_production_request_lock_unlock
-msgid "Lock/Unlock Manufacturing Requests"
-msgstr "Verrouiller/Déverrouiller les demandes de fabrication"
-
-#. module: mrp_production_request
-#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__locked
-msgid "Locked"
-msgstr "Verrouillé"
-
-#. module: mrp_production_request
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
-msgid "Unlock"
-msgstr "Déverrouiller"
-
-#. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:120
-#, python-format
-msgid "Only draft Production requests can be removed!"
-msgstr "Impossible de supprimer une demande de fabrication dont le statut est différent de brouillon"
-
-#. module: mrp_production_request
-#: model:ir.model.fields,field_description:mrp_production_request.field_res_config_settings__mrp_production_request_date_desired_remove_check
-msgid "Remove Desired Date check"
-msgstr "Enlever le contrôle de la date souhaité"
-
-#. module: mrp_production_request
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.res_config_settings_view_form
-msgid "Remove the check of the Desired date."
-msgstr "Enlever le contrôle de la date souhaité par rapport à la date de la demande de fabrication"
-
-#. module: mrp_production_request
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.res_config_settings_view_form
-msgid "Product request"
-msgstr "Demande de fabrication"
-
-#. module: mrp_production_request
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_form_view_inherited
-msgid "Production requests"
-msgstr "Demandes de fabrication"
-
-#. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:0
-#, python-format
-msgid "All the selected Production Requests must be for the same product!"
-msgstr "Toutes les demandes de fabrications sélectionnées doivent avoir le même article!"
-
-#. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:0
-#, python-format
-msgid "Only validated Production requests can create Production order!"
-msgstr "Impossible de créer un ordre de fabrication à partir d'une demande non validée"
-
-#. module: mrp_production_request
-#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
-msgid "Make as done"
-msgstr "Clôturer"
-
-#. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:124
-#, python-format
-msgid "Can not update Done or Cancelled Request!"
-msgstr "Impossible de modifier une demande de fabrication clôturée ou annulée"
-
-
-#. module: mrp_production_request
-#: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__quantity_produced_set_man
-msgid ""
-"If the Produced Quantity have been set manually,if this is true the field "
-"will not be overwritten by _compute_quantity_produced method"
-msgstr ""
-"Ce champ indique si la quantité produite a été spécifiée manuellement,"
-"elle ne sera pas écrasé par la méthode _compute_quantity_produced"
-
-
-#. module: mrp_production_request
-#: model:res.groups,name:mrp_production_request.group_production_request_manual_update_quantity_produced
-msgid "Manual update of Manufacturing request produced quantity"
-msgstr "Modifier manuellement la Quantité fabriquée de la demande de fabrication"
-
-
-#. module: mrp_production_request
-#: code:addons/mrp_production_request/models/mrp_production_request.py:0
-#, python-format
-msgid "You are not authorised to do this action!"
-msgstr "Vous n'êtes pas autorisé à modifier manuellement la quantité fabriquée!"

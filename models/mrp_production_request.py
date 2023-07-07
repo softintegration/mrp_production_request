@@ -167,7 +167,13 @@ class MrpProductionRequest(models.Model):
         }
 
     def action_cancel(self):
+        self._check_cancel()
         return self._action_cancel()
+
+    def _check_cancel(self):
+        for each in self:
+            if each.mrp_production_ids_count:
+                raise ValidationError(_("Can not cancel Manufacturing request related to one or more manufacturing orders!"))
 
     def _action_make_waiting(self):
         self.write({'state': 'waiting', 'locked': True})

@@ -215,6 +215,10 @@ class MrpProductionRequest(models.Model):
             for each in self:
                 if float_is_zero(each.quantity, precision_rounding=each.product_uom_id.rounding):
                     raise UserError(_('The Requested quantity must be positive!'))
+                if not each.mrp_production_ids:
+                    raise ValidationError(_("No related manufacturing order has been detected,can not make %s as done!")%each.name)
+                if set(['draft','confirmed','progress','to_close']).intersection(set(each.mrp_production_ids.mapped("state"))):
+                    raise ValidationError(_("Can not make %s as done,some related manufacturing orders are neither done nor cancelled!")%each.name)
 
     @api.depends('mrp_production_ids')
     def _compute_mrp_production_ids_count(self):

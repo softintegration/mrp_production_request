@@ -211,10 +211,11 @@ class MrpProductionRequest(models.Model):
         self.write({'locked': False})
 
     def _check_state(self, state):
-        if state in ('validated', 'done'):
-            for each in self:
+        for each in self:
+            if state in ('validated', 'done'):
                 if float_is_zero(each.quantity, precision_rounding=each.product_uom_id.rounding):
                     raise UserError(_('The Requested quantity must be positive!'))
+            if state == 'done':
                 if not each.mrp_production_ids:
                     raise ValidationError(_("No related manufacturing order has been detected,can not make %s as done!")%each.name)
                 if set(['draft','confirmed','progress','to_close']).intersection(set(each.mrp_production_ids.mapped("state"))):

@@ -104,11 +104,11 @@ msgstr ""
 #: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #, python-format
 msgid ""
-"Can not cancel Manufacturing request related to one or more manufacturing "
+"Can not cancel Manufacturing request related to one or more non cancelled manufacturing "
 "orders!"
 msgstr ""
 "Impossible d'annuler une demande de fabrication liée à une ou plusieurs "
-"ordres de fabrications!"
+"ordres de fabrication(s) non annulé(s)!"
 
 #. module: mrp_production_request
 #: code:addons/mrp_production_request/models/mrp_production_request.py:0

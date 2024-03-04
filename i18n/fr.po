@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-17 12:00+0000\n"
-"PO-Revision-Date: 2023-07-17 12:00+0000\n"
+"POT-Creation-Date: 2024-03-04 21:38+0000\n"
+"PO-Revision-Date: 2024-03-04 21:38+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -104,8 +104,8 @@ msgstr ""
 #: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #, python-format
 msgid ""
-"Can not cancel Manufacturing request related to one or more non cancelled manufacturing "
-"orders!"
+"Can not cancel Manufacturing request related to one or more non cancelled "
+"manufacturing orders!"
 msgstr ""
 "Impossible d'annuler une demande de fabrication liée à une ou plusieurs "
 "ordres de fabrication(s) non annulé(s)!"
@@ -117,9 +117,8 @@ msgid ""
 "Can not make %s as done,some related manufacturing orders are neither done "
 "nor cancelled!"
 msgstr ""
-"Impossible de clôturer la demande %s, certains ordres de fabrication liés ne sont pas faits "
-"ni annulés!"
-
+"Impossible de clôturer la demande %s, certains ordres de fabrication liés ne"
+" sont pas faits ni annulés!"
 
 #. module: mrp_production_request
 #: code:addons/mrp_production_request/models/mrp_production_request.py:0
@@ -488,7 +487,8 @@ msgstr "Aucune demande de fabrication n'est detectée"
 msgid ""
 "No related manufacturing order has been detected,can not make %s as done!"
 msgstr ""
-"Aucun ordre de fabrication lié n'a été détecté,impossible de clôturer la demande %s !"
+"Aucun ordre de fabrication lié n'a été détecté,impossible de clôturer la "
+"demande %s !"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__note
@@ -680,6 +680,14 @@ msgstr ""
 #, python-format
 msgid "The Requested quantity must be positive!"
 msgstr "Quantité demandée doit être positive"
+
+#. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
+msgid ""
+"This request is already related to manufacturing order. Do you want to "
+"proceed?"
+msgstr "Cette demande est déjà liée à un ordre de fabrication. Souhaitez-vous "
+"Continuer?"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__activity_exception_decoration

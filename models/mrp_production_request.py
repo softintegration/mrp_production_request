@@ -142,6 +142,26 @@ class MrpProductionRequest(models.Model):
         self._check_state('done')
         return self._action_done()
 
+    def action_make_production_order_confirm(self):
+        if sum(self.mapped("mrp_production_ids_count")) == 0:
+            return self.action_make_production_order()
+        request_related_to_orders = ",".join(prod_request.name for prod_request in self.filtered(lambda pr:pr.mrp_production_ids_count > 0))
+        new_wizard = self.env['mrp.production.request.confirm'].create({
+            'request_ids': [(6, 0, self.ids)],
+            'confirm_message': _("Requests %s are already related to manufacturing orders. Do you want to proceed?")%request_related_to_orders
+        })
+        view_id = self.env.ref('mrp_production_request.view_mrp_production_request_confirm').id
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Confirmation'),
+            'view_mode': 'form',
+            'res_model': 'mrp.production.request.confirm',
+            'target': 'new',
+            'res_id': new_wizard.id,
+            'views': [[view_id, 'form']],
+            'context': self.env.context
+        }
+
     def action_make_production_order(self):
         product_ids = self.mapped("product_id")
         if len(product_ids) > 1:

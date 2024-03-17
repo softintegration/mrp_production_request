@@ -3,4 +3,4 @@ access_mrp_production_request_user,mrp.production.request.user,model_mrp_product
 access_mrp_production_request_manager,mrp.production.request.manager,model_mrp_production_request,group_mrp_production_request_manager,1,1,1,1
 access_mrp_production_create_user,mrp.production.create.user,model_mrp_production_create,mrp.group_mrp_user,1,1,1,1
 access_mrp_production_create_manager,mrp.production.create.manager,model_mrp_production_create,mrp.group_mrp_manager,1,1,1,1
-
+access_mrp_production_request_confirm_user,mrp.production.request.confirm.user,model_mrp_production_request_confirm,mrp.group_mrp_user,1,1,1,1

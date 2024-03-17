@@ -8,9 +8,10 @@
             <field name="arch" type="xml">
                 <tree string="Manufacturing Requests" js_class="lazy_column_list" multi_edit="1" sample="1">
                     <header>
-                        <button name="action_make_production_order" string="Make Manufacturing order" type="object"
+                        <button name="action_make_production_order_confirm" string="Make Manufacturing order" type="object"
                                 groups="mrp.group_mrp_user" />
                     </header>
+                    <field name="mrp_production_ids_count" invisible="1"/>
                     <field name="name"/>
                     <field name="date_request" />
                     <field name="product_id"/>

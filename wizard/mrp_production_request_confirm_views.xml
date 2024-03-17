@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_mrp_production_request_confirm" model="ir.ui.view">
+            <field name="name">view.mrp.production.request.confirm</field>
+            <field name="model">mrp.production.request.confirm</field>
+            <field name="arch" type="xml">
+                <form string="Confirmation">
+                    <p>
+                        <field name="confirm_message" nolabel="1" readonly="1"/>
+                    </p>
+                    <footer>
+                        <button string='Ok' name="apply" type="object" class="btn-primary" data-hotkey="q"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+</odoo>

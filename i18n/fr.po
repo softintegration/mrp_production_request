@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-04 21:38+0000\n"
-"PO-Revision-Date: 2024-03-04 21:38+0000\n"
+"POT-Creation-Date: 2024-03-17 21:51+0000\n"
+"PO-Revision-Date: 2024-03-17 21:51+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -129,6 +129,7 @@ msgstr "Impossible de modifier une demande de fabrication clôturée ou annulée
 #. module: mrp_production_request
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.mrp_production_request_form_view
 #: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_create
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_request_confirm
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -165,6 +166,18 @@ msgid "Confirm"
 msgstr "Valider"
 
 #. module: mrp_production_request
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__confirm_message
+msgid "Confirm Message"
+msgstr ""
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_request_confirm
+#, python-format
+msgid "Confirmation"
+msgstr ""
+
+#. module: mrp_production_request
 #: model:ir.model.fields,help:mrp_production_request.field_mrp_production_request__product_uom_category_id
 msgid ""
 "Conversion between Units of Measure can only occur if they belong to the "
@@ -191,6 +204,7 @@ msgstr "Créer un order de fabrication"
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__create_uid
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__create_uid
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__create_uid
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__create_uid
 msgid "Created by"
 msgstr ""
@@ -198,6 +212,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__create_date
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__create_date
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__create_date
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__create_date
 msgid "Created on"
 msgstr ""
@@ -216,6 +231,7 @@ msgstr "Date souhaitée"
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__display_name
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__display_name
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__display_name
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__display_name
 msgid "Display Name"
 msgstr "Nom à afficher"
@@ -260,6 +276,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__id
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__id
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__id
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__id
 msgid "ID"
 msgstr ""
@@ -310,6 +327,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create____last_update
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request____last_update
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm____last_update
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item____last_update
 msgid "Last Modified on"
 msgstr ""
@@ -317,6 +335,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__write_uid
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__write_uid
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__write_uid
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -324,6 +343,7 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__write_date
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__write_date
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__write_date
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__write_date
 msgid "Last Updated on"
 msgstr ""
@@ -522,6 +542,11 @@ msgid "Number of unread messages"
 msgstr ""
 
 #. module: mrp_production_request
+#: model_terms:ir.ui.view,arch_db:mrp_production_request.view_mrp_production_request_confirm
+msgid "Ok"
+msgstr ""
+
+#. module: mrp_production_request
 #: code:addons/mrp_production_request/models/mrp_production_request.py:0
 #, python-format
 msgid "Only draft Production requests can be removed!"
@@ -617,6 +642,7 @@ msgstr ""
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_create__request_ids
+#: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request_confirm__request_ids
 #: model:ir.model.fields,field_description:mrp_production_request.field_production_requests_create_item__request_id
 msgid "Request"
 msgstr "Demande de fabrication"
@@ -630,6 +656,16 @@ msgstr "Quantité demandée"
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__request_user_id
 msgid "Requested by"
 msgstr "Demandé par"
+
+#. module: mrp_production_request
+#: code:addons/mrp_production_request/models/mrp_production_request.py:0
+#, python-format
+msgid ""
+"Requests %s are already related to manufacturing orders. Do you want to "
+"proceed?"
+msgstr ""
+"Les Demandes %s sont déjà liées aux ordres de fabrication. Souhaitez-vous "
+"Continuer?"
 
 #. module: mrp_production_request
 #: model:ir.model.fields,field_description:mrp_production_request.field_mrp_production_request__activity_user_id
@@ -686,7 +722,8 @@ msgstr "Quantité demandée doit être positive"
 msgid ""
 "This request is already related to manufacturing order. Do you want to "
 "proceed?"
-msgstr "Cette demande est déjà liée à un ordre de fabrication. Souhaitez-vous "
+msgstr ""
+"Cette demande est déjà liée à un ordre de fabrication. Souhaitez-vous "
 "Continuer?"
 
 #. module: mrp_production_request
@@ -748,6 +785,11 @@ msgstr ""
 #. module: mrp_production_request
 #: model:ir.model,name:mrp_production_request.model_mrp_production_create
 msgid "mrp.production.create"
+msgstr ""
+
+#. module: mrp_production_request
+#: model:ir.model,name:mrp_production_request.model_mrp_production_request_confirm
+msgid "mrp.production.request.confirm"
 msgstr ""
 
 #. module: mrp_production_request
